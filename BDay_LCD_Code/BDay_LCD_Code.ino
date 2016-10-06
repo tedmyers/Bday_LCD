@@ -70,37 +70,45 @@ void setup() {
   lcd.createChar(2, frownie);
   lcd.createChar(3, armsDown);
   lcd.createChar(4, armsUp);
+}
 
-  //lcd.setCursor(1, 1);
-  // Print a message to the lcd.
-  lcd.print("I "); 
-  lcd.write(byte(0)); // when calling lcd.write() '0' must be cast as a byte
-  lcd.print(" Arduino! ");
-  lcd.write((byte) 1);
-  //lcd.write(4);
+void final_screen(void)
+{
+  uint16_t delayTime = 500;
+  
+  lcd.setCursor(1,0);
+  lcd.print("Happy Birthday");
+  lcd.setCursor(4,1);
+  lcd.print("Amanda!!");
+
+  // draw hearts
+  lcd.setCursor(2,1);
+  lcd.write(byte(0));
+  lcd.setCursor(13,1);
+  lcd.write(byte(0));
+
+  while (1)
+  {
+    lcd.setCursor(0, 1);
+    // draw the little man, arms down:
+    lcd.write(3);
+    lcd.setCursor(15, 1);
+    // draw the little man, arms up:
+    lcd.write(4);
+    delay(delayTime);
+    lcd.setCursor(0, 1);
+    // draw him arms up:
+    lcd.write(4);
+    lcd.setCursor(15, 1);
+    // draw him arms down:
+    lcd.write(3);
+    delay(delayTime);
+  }
 
 }
 
 void loop() {
-  // read the potentiometer on A0:
-  int sensorReading = analogRead(A0);
-  // map the result to 200 - 1000:
-  int delayTime = map(sensorReading, 0, 1023, 200, 1000);
-  // set the cursor to the bottom row, 5th position:
 
-  
-  lcd.setCursor(0, 1);
-  // draw the little man, arms down:
-  lcd.write(3);
-  lcd.setCursor(15, 1);
-  // draw the little man, arms down:
-  lcd.write(3);
-  delay(delayTime);
-  lcd.setCursor(0, 1);
-  // draw him arms up:
-  lcd.write(4);
-  lcd.setCursor(15, 1);
-  // draw the little man, arms down:
-  lcd.write(4);
-  delay(delayTime);
+  final_screen();
+
 }
