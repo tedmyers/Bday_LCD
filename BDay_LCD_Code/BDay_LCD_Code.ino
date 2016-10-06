@@ -72,6 +72,26 @@ void setup() {
   lcd.createChar(4, armsUp);
 }
 
+void walking_men(void);
+void scrolling_text(void);
+void final_screen(void);
+
+void loop() 
+{
+
+  walking_men();
+  lcd.clear();
+
+  scrolling_text();
+
+  delay(500);
+  
+  final_screen();
+
+}
+
+// Functions
+
 void final_screen(void)
 {
   uint16_t delayTime = 500;
@@ -107,55 +127,105 @@ void final_screen(void)
 
 }
 
-void moving_man(uint8_t x_pos, uint8_t y_pos, uint16_t delayTime, uint8_t loops, bool start_state)
-{
-  lcd.setCursor(x_pos, y_pos);
+// places man in location (x_pos, y_pos) with moving arms; moves for loops times with delay delayTime;
 
-  uint8_t iii;
-  for (iii=0; iii<loops; iii++)
-  { 
-    lcd.setCursor(x_pos, y_pos);
-    if (start_state)
-      lcd.write(3); // arms down
-    else
-      lcd.write(4); // arms up
-    
-    delay(delayTime);
-    lcd.setCursor(x_pos, y_pos);
-    
-    if (start_state)
-      lcd.write(4); // arms up
-    else
-      lcd.write(3); // arms down
-      
-    delay(delayTime);
-  }
-}
-
-void loop() 
+void walking_men(void)
 {
-  uint8_t y_pos = 0;
-  uint8_t x_pos = 0;
+  
   uint8_t iii;
   for (iii=0; iii<16; iii++)
   {   
-    moving_man(iii,0,200,1, true);
-    //moving_man(16-iii,1,200,1,true);
+    // man walking right on row 0
+    lcd.setCursor(iii,0);
+    if (iii%2)
+      lcd.write(4);
+    else
+      lcd.write(3);
 
-    lcd.setCursor(iii, 0);
+    if (iii>2)
+    {
+      lcd.setCursor(iii-3, 0);
+      lcd.write(byte(0));
+    }
+
+    // man walking left on row 1
+    lcd.setCursor(15-iii,1);
+    if (iii%2)
+      lcd.write(3);
+    else
+      lcd.write(4);
+
+    if (iii>2)
+    {
+      lcd.setCursor(18-iii, 1);
+      lcd.write(byte(0));
+    }
+
+    uint8_t reverse = 15-iii;
+    if (reverse > 250)
+      reverse = 15;
+
+    // remove men
+    if (iii>0)
+      { lcd.setCursor(iii-1, 0); }
+    lcd.print(" ");  
+    if (iii<16)
+      { lcd.setCursor(reverse+1, 1); }
     lcd.print(" ");
-//    
-//    lcd.setCursor(16-iii,1);
-//    lcd.print(" ");
 
-    
+    delay(400); 
   }
+}
 
-  //moving_man(0,0,500, 10);
-
-  delay(10000);
-  final_screen();
-
+void scrolling_text(void)
+{
+  uint16_t delayTime = 200;
+  lcd.setCursor(1,0);
+  lcd.print("H");
+  delay(delayTime);
+  lcd.print("A");
+  delay(delayTime);
+  lcd.print("P");
+  delay(delayTime);
+  lcd.print("P");
+  delay(delayTime);
+  lcd.print("Y");
+  delay(delayTime);
+  lcd.print(" ");
+  delay(delayTime);
   
+  lcd.print("B");
+  delay(delayTime);
+  lcd.print("I");
+  delay(delayTime);
+  lcd.print("R");
+  delay(delayTime);
+  lcd.print("T");
+  delay(delayTime);
+  lcd.print("H");
+  delay(delayTime);
+  lcd.print("D");
+  delay(delayTime);
+  lcd.print("A");
+  delay(delayTime);
+  lcd.print("Y");
+  delay(delayTime);
 
+  lcd.setCursor(4,1);
+  lcd.print("A");
+  delay(delayTime);
+  lcd.print("M");
+  delay(delayTime);
+  lcd.print("A");
+  delay(delayTime);
+  lcd.print("N");
+  delay(delayTime);
+  lcd.print("D");
+  delay(delayTime);
+  lcd.print("A");
+  delay(delayTime);
+  lcd.print("!");
+  delay(delayTime);
+  lcd.print("!");
+  delay(delayTime);
 }
