@@ -107,8 +107,55 @@ void final_screen(void)
 
 }
 
-void loop() {
+void moving_man(uint8_t x_pos, uint8_t y_pos, uint16_t delayTime, uint8_t loops, bool start_state)
+{
+  lcd.setCursor(x_pos, y_pos);
 
+  uint8_t iii;
+  for (iii=0; iii<loops; iii++)
+  { 
+    lcd.setCursor(x_pos, y_pos);
+    if (start_state)
+      lcd.write(3); // arms down
+    else
+      lcd.write(4); // arms up
+    
+    delay(delayTime);
+    lcd.setCursor(x_pos, y_pos);
+    
+    if (start_state)
+      lcd.write(4); // arms up
+    else
+      lcd.write(3); // arms down
+      
+    delay(delayTime);
+  }
+}
+
+void loop() 
+{
+  uint8_t y_pos = 0;
+  uint8_t x_pos = 0;
+  uint8_t iii;
+  for (iii=0; iii<16; iii++)
+  {   
+    moving_man(iii,0,200,1, true);
+    //moving_man(16-iii,1,200,1,true);
+
+    lcd.setCursor(iii, 0);
+    lcd.print(" ");
+//    
+//    lcd.setCursor(16-iii,1);
+//    lcd.print(" ");
+
+    
+  }
+
+  //moving_man(0,0,500, 10);
+
+  delay(10000);
   final_screen();
+
+  
 
 }
