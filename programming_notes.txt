@@ -1,0 +1,14 @@
+to read the flash (took a long time):
+avrdude -p m328 -P /dev/cu.usbserial-AL008K5E -c buspirate -U flash:r:flash.bin:r
+
+Note that this is m328, not m328p. I think this is why there were errors programming from the Arduino IDE. The first problem I encountered was the lack of a connection from the bus pirate to CLK; this was caused by a faulty solder joint from the 5x2 to 3x2 ISP adapter.
+
+Can find the .hex files produced by the Arduino IDE by enabling verbose output while compiling, then looking at the bottom for the file path.
+
+Had to re-program fuses because clock speed was set to divide by 4, and use internal clock reference (using 16MHz crystal here). Used the engbedded fuse calculator. For some reason AVRdude responded that the high/extended fuse registers were switched. Don't know why, but it worked in the end.
+
+Final command used:
+avrdude -p m328 -P /dev/cu.usbserial-AL008K5E -c buspirate -U flash:w:Bday_LCD_Code.cpp.hex
+
+Changing fuses:
+avrdude -p m328 -P /dev/cu.usbserial-AL008K5E -c buspirate -U lfuse:w:0xff:m -U hfuse:w:0xde:m -U efuse:w:0x05:m
